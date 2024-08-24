@@ -44,14 +44,13 @@ module.exports.updateListing = async (req, res) => {
         throw new ExpressErr(400, "Send valid data");
 
     }
-    let listing = await Listing.updateOne({ _id: id }, newlisting)
+    let listing = await Listing.findByIdAndUpdate(id , newlisting)
 
-    if (typeof req.file !== "undefined") {
+    if (req.file) {
 
         let url = req.file.path;
         let filename = req.file.filename;
-
-        listing.image = { url, filename }
+        listing.image = { filename, url }
     }
 
     await listing.save();
